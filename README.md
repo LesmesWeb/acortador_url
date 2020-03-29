@@ -25,4 +25,16 @@ django-admin startproject acortador     # Creamos la carpeta del proyecto
 python3 manage.py startapp core           # Dentro del proyecto creamos el App 
 ```
 
-continuar: <https://www.udemy.com/course/curso-django-creando-un-acortador-url/learn/lecture/15376612#questions>
+## Guias
+
+Vamos apoyarnos del siguente link para las vista basadas en clases:
+<https://ccbv.co.uk/projects/Django/2.2/>
+Para escribir el readme.md usaremos:
+<https://stackedit.io/app#> y <https://dillinger.io/>
+
+## Métodos Django
+
+Cómo sobreescribir el método save():
+<https://yo.toledano.org/desarrollo/como-sobreescribir-el-metodo-save-en-django.html>
+
+
