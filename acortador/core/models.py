@@ -6,7 +6,7 @@ import datetime
 # Create your models here.
 class EnlaceQuerySet(models.QuerySet):
     def decode_enlace(self, codigo):
-        decode = Hashids(min_lenght=4,alphabet='abcdefghijklmnopqrstuvwxyz').decode(codigo)[0]
+        decode = Hashids(min_length=4,alphabet='abcdefghijklmnopqrstuvwxyz').decode(codigo)[0]
         self.filter(pk=decode).update(contador=models.F('contador') + 1)
         return self.filter(pk=decode).first().url
 
@@ -18,9 +18,9 @@ class EnlaceQuerySet(models.QuerySet):
 
     def fechas(self,pk):
         #values: convierte el query en forma de diccionario
-        return self.values('fecha').annote(
-            julio=models.Sum('contador',filter=models.Q(filter__gte=datetime.date(2019,7,1),
-            filter__lte=datetime.date(2019,7,31)))
+        return self.values('fecha').annotate(
+            marzo=models.Sum('contador',filter=models.Q(fecha__gte=datetime.date(2020,3,1),
+            fecha__lte=datetime.date(2020,3,31)))
         ).filter(pk=pk)
 
 class Enlace(models.Model):
@@ -28,6 +28,8 @@ class Enlace(models.Model):
     codigo = models.CharField(max_length=8,blank=True)
     fecha = models.DateField(auto_now_add=True)         #se registra la fecha una sola vez
     contador = models.PositiveIntegerField(default=0)   #solo almacenara numero positivos
+
+    enlaces = EnlaceQuerySet.as_manager()   #administrador del modelo
 
     #sobre escribiremos el metodo class meta el cual contiene propiedades interesantes
     class Meta:
@@ -42,7 +44,7 @@ class Enlace(models.Model):
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)
         if not self.codigo:
-            self.codigo = Hashids(min_lenght=4,alphabet='abcdefghijklmnopqrstuvwxyz').encode(self.pk)
+            self.codigo = Hashids(min_length=4,alphabet='abcdefghijklmnopqrstuvwxyz').encode(self.pk)
             self.save()
     
     #como crear una url con base en un objeto

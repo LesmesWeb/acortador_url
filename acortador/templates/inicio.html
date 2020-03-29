@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+  Acortador URL
+{% endblock titulo %}
+
+{% block contenido %}
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-4">
+        <h1 class="title">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+        <h2 class="subtitle">
+          Fusce quis turpis hendrerit, <strong>ultrices</strong> nibh quis, malesuada mauris. Praesent aliquam ligula
+          in faucibus
+          tempus
+        </h2>
+        <br>
+        <form method="POST">
+          {% csrf_token %}
+          <div class="field has-addons">
+            <div class="control">
+              {{form.url}}
+            </div>
+            <div class="control">
+              <input type="submit" class="button is-info is-rounded is-medium" value="Acortar">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="column is-6 is-offset-2">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["Enlaces", "Redirecciones"],
+      datasets: [
+        {
+          backgroundColor: ["#8e5ea2", "#3e95cd"],
+          data: ["{{total_enlaces}}", "{{total_redirecciones}}"]
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+</script>
+
+{% endblock contenido %}
